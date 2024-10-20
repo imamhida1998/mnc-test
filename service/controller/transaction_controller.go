@@ -8,15 +8,15 @@ import (
 	"net/http"
 )
 
-type topupController struct {
-	topupUsecase usecase.TransactionUsecase
+type TransactionController struct {
+	transactionUsecase usecase.TransactionUsecase
 }
 
-func NewTopupController(topup usecase.TransactionUsecase) topupController {
-	return topupController{topup}
+func NewTransactionController(tx usecase.TransactionUsecase) TransactionController {
+	return TransactionController{tx}
 }
 
-func (t *topupController) TopUp(ctx *gin.Context) {
+func (t *TransactionController) TopUp(ctx *gin.Context) {
 	var input request.TopUp
 
 	err := ctx.ShouldBindJSON(&input)
@@ -39,7 +39,7 @@ func (t *topupController) TopUp(ctx *gin.Context) {
 		return
 	}
 
-	resTopUp, err := t.topupUsecase.CreateTopUp(&input, users)
+	resTopUp, err := t.transactionUsecase.CreateTopUp(&input, users)
 	if err != nil {
 		response := gin.H{
 			"status": "FAILED",
@@ -58,7 +58,7 @@ func (t *topupController) TopUp(ctx *gin.Context) {
 
 }
 
-func (t *topupController) Payment(ctx *gin.Context) {
+func (t *TransactionController) Payment(ctx *gin.Context) {
 	var input request.Payment
 
 	err := ctx.ShouldBindJSON(&input)
@@ -81,7 +81,7 @@ func (t *topupController) Payment(ctx *gin.Context) {
 		return
 	}
 
-	resTopUp, err := t.topupUsecase.CreatePayment(&input, users)
+	resTopUp, err := t.transactionUsecase.CreatePayment(&input, users)
 	if err != nil {
 		response := gin.H{
 			"status": "FAILED",
@@ -100,7 +100,7 @@ func (t *topupController) Payment(ctx *gin.Context) {
 
 }
 
-func (t *topupController) Transfer(ctx *gin.Context) {
+func (t *TransactionController) Transfer(ctx *gin.Context) {
 	var input request.Transfer
 
 	err := ctx.ShouldBindJSON(&input)
@@ -123,7 +123,7 @@ func (t *topupController) Transfer(ctx *gin.Context) {
 		return
 	}
 
-	resTopUp, err := t.topupUsecase.Transfer(&input, users)
+	resTopUp, err := t.transactionUsecase.Transfer(&input, users)
 	if err != nil {
 		response := gin.H{
 			"status": "FAILED",
@@ -142,7 +142,7 @@ func (t *topupController) Transfer(ctx *gin.Context) {
 
 }
 
-func (t *topupController) Transaction(ctx *gin.Context) {
+func (t *TransactionController) Transaction(ctx *gin.Context) {
 
 	users, found := ctx.MustGet("currentUser").(*model.User)
 	if !found {
@@ -154,7 +154,7 @@ func (t *topupController) Transaction(ctx *gin.Context) {
 		return
 	}
 
-	resTopUp, err := t.topupUsecase.TransactionReport(users.UserId)
+	resTopUp, err := t.transactionUsecase.TransactionReport(users.UserId)
 	if err != nil {
 		response := gin.H{
 			"status": "FAILED",

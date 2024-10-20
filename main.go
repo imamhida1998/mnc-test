@@ -48,7 +48,7 @@ func main() {
 	topupUsecase := usecase.NewTransactionUsecase(userRepository, topUpRepository, paymentRepository, transferRepository, transactionRepository)
 
 	userController := controller.NewUserController(userUsecase, AuthJwt)
-	topupController := controller.NewTopupController(topupUsecase)
+	topupController := controller.NewTransactionController(topupUsecase)
 
 	router := gin.Default()
 	router.POST("/register", userController.Register)
